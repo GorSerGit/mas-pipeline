@@ -1,0 +1,132 @@
+.page-container {
+  max-width: 1400px; margin: 0 auto;
+  height: 100%; display: flex; flex-direction: column;
+}
+
+.page-header { margin-bottom: 24px; }
+.page-title { font-size: 24px; font-weight: 700; color: var(--text-main); margin: 0 0 8px 0; }
+.page-subtitle { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+/* Жестко задаем высоту сетки */
+.generator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  height: calc(100vh - 180px); /* Фиксируем высоту под размер экрана */
+}
+
+@media (max-width: 1024px) {
+  .generator-grid { grid-template-columns: 1fr; height: auto; }
+}
+
+/* Панели */
+.panel-card {
+  height: 100%; display: flex; flex-direction: column;
+  background: var(--bg-surface) !important; overflow: hidden;
+}
+
+.panel-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border-color);
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 600; color: var(--text-main);
+  mat-icon { font-size: 18px; width: 18px; height: 18px; color: var(--text-muted); }
+}
+
+.panel-body {
+  padding: 20px; display: flex; flex-direction: column; flex: 1; min-height: 0;
+}
+
+/* Поле ввода */
+.code-input {
+  flex: 1; /* Занимает все свободное место */
+  min-height: 150px;
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px; color: var(--text-main);
+  font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;
+  resize: none; outline: none;
+  &:focus { border-color: var(--brand-blue); }
+}
+
+/* Метрики */
+.metrics-bar {
+  display: flex; gap: 24px; margin: 16px 0; padding: 12px 16px;
+  background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px;
+  .metric {
+    display: flex; align-items: center; gap: 8px;
+    .label { font-size: 13px; color: var(--text-muted); }
+    .value { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--brand-blue); }
+  }
+}
+
+.submit-btn { height: 48px !important; font-size: 15px !important; }
+
+/* Вкладки и Терминал */
+.output-card { padding: 0 !important; }
+
+::ng-deep .custom-tabs .mat-mdc-tab-body-wrapper {
+  flex: 1; height: 100%; /* Растягиваем контент вкладки */
+}
+
+.terminal-wrapper {
+  height: 100%; display: flex; flex-direction: column; background: #000000;
+}
+
+.terminal-header {
+  background: #1A1A1A; padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #333;
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    &.red { background: #FF5F56; }
+    &.yellow { background: #FFBD2E; }
+    &.green { background: #27C93F; }
+  }
+  .term-title { margin-left: 8px; font-size: 12px; color: #888; font-family: 'JetBrains Mono', monospace; }
+}
+
+.terminal-body {
+  padding: 16px; flex: 1; overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: #D1D5DB;
+  .log-line {
+    margin-bottom: 6px; word-break: break-all;
+    .prompt { color: var(--brand-blue); margin-right: 8px; }
+  }
+  .cursor-blink { animation: blink 1s step-end infinite; color: #D1D5DB; }
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.file-explorer { padding: 16px; height: 100%; overflow-y: auto; background: var(--bg-body); }
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);
+  mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.5; }
+}
+/* ========================================= */
+/* ИСПРАВЛЕНИЕ РАМКИ ФОКУСА (ВЫЛЕЗАЮЩЕЙ ОБВОДКИ) */
+/* ========================================= */
+
+/* 1. Заставляем карточку обрезать всё, что выходит за её пределы */
+.panel-card,
+.mat-mdc-card {
+  overflow: hidden !important;
+}
+
+/* 2. Убираем стандартную обводку Material с табов */
+::ng-deep .custom-tabs .mat-mdc-tab:focus,
+::ng-deep .custom-tabs .mat-mdc-tab:focus-within,
+::ng-deep .custom-tabs .mat-mdc-tab-header:focus {
+  outline: none !important;
+}
+
+/* 3. Убираем обводку с самого терминала при клике */
+.terminal-wrapper:focus,
+.terminal-wrapper:focus-visible,
+.terminal-body:focus {
+  outline: none !important;
+}
+
+/* 4. Убираем обводку с текстового поля (если она тоже вылезает) */
+.code-input:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 1px var(--brand-blue) !important; /* Аккуратная тонкая рамка вместо толстой */
+}

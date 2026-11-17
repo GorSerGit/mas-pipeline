@@ -1,0 +1,32 @@
+# Секреты и локальные настройки
+.env
+.env.*
+!.env.example
+!.env.deploy.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node / Angular
+node_modules/
+.angular/
+dist/
+
+# Результаты прогонов и образы
+output/
+/analyst_results.json
+*.tar
+*.zip
+
+# IDE / ОС
+.idea/
+.vscode/
+.claude/
+Thumbs.db
+.DS_Store

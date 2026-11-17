@@ -1,0 +1,43 @@
+{
+  "project_name": "SPb_Parking_Assistant",
+  "domain": "Geolocation / Fleet Management",
+  "description": "Прототип мобильного помощника для водителей техслужб СПб.",
+  "user_stories": [
+    {
+      "role": "водитель",
+      "action": "получать уведомление при въезде в зону",
+      "so_that": "избежать штрафа"
+    }
+  ],
+  "entities": [
+    "ParkingZone",
+    "ParkingSession",
+    "Vehicle",
+    "Event"
+  ],
+  "features": [
+    "geofencing",
+    "session_tracking",
+    "mock_payment"
+  ],
+  "constraints": {
+    "stack": {
+      "backend": "C# 14 / ASP.NET 10 Core",
+      "frontend": "Angular 20.1.6",
+      "mobile": "Kotlin 2.2.21",
+      "database": "PostgreSQL 17.9 + PostGIS",
+      "messaging": "Kafka",
+      "infrastructure": "Docker",
+      "ci_cd": "GitLab CI/CD"
+    },
+    "geo": "PostGIS SRID 4326",
+    "external_services": [
+      "mock_payment_adapter"
+    ]
+  },
+  "acceptance_criteria": [
+    "Система определяет въезд в полигон",
+    "Предупреждение за 10 минут",
+    "Интеграция через mock-адаптер"
+  ]
+}

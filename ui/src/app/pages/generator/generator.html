@@ -1,0 +1,91 @@
+<div class="page-container">
+  <h1 class="page-title">Генератор приложений</h1>
+
+  <div class="generator-grid">
+    <!-- Левая часть: Ввод требований -->
+    <mat-card class="panel-card">
+      <div class="panel-header">
+        <mat-icon>description</mat-icon>
+        <span>Бизнес-требования (Кейс)</span>
+      </div>
+      <div class="panel-body">
+        <textarea
+          [ngModel]="requirements()"
+          (ngModelChange)="requirements.set($event)"
+          rows="12"
+          class="code-input"
+          placeholder="Вставьте сюда текст бизнес-требований...">
+        </textarea>
+
+        <div class="metrics-bar">
+          <div class="metric">
+            <span class="label">Токенов:</span>
+            <span class="value">{{ tokenCount() }}</span>
+          </div>
+          <div class="metric">
+            <span class="label">Время:</span>
+            <span class="value">{{ timeSpent() }} сек</span>
+          </div>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="submit-btn"
+          [disabled]="isRunning()"
+          (click)="startPipeline()">
+          <mat-icon>play_arrow</mat-icon>
+          {{ isRunning() ? 'Генерация...' : 'Запустить пайплайн' }}
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Правая часть: Логи и Файлы -->
+    <mat-card class="panel-card output-card">
+      <div class="panel-header">
+        <mat-icon>terminal</mat-icon>
+        <span>Результат работы</span>
+        <mat-spinner *ngIf="isRunning()" diameter="20"></mat-spinner>
+      </div>
+
+      <div class="panel-body">
+        <mat-tab-group animationDuration="0ms" class="custom-tabs">
+
+          <!-- Вкладка 1: Логи -->
+          <mat-tab label="Терминал">
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="term-title">pipeline.log</span>
+              </div>
+              <div class="terminal-body" #terminalContainer>
+                <div class="log-line" *ngFor="let log of logs()">
+                  <span class="prompt">></span> {{ log }}
+                </div>
+                <div class="cursor-blink" *ngIf="isRunning()">_</div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- Вкладка 2: Файлы -->
+          <mat-tab label="Сгенерированные файлы">
+            <div class="file-explorer">
+              <div class="empty-state" *ngIf="generatedFiles().length === 0">
+                <mat-icon>folder_open</mat-icon>
+                <p>Файлы появятся здесь после начала генерации</p>
+              </div>
+              <app-file-tree
+                *ngIf="generatedFiles().length > 0"
+                [nodes]="generatedFiles()"
+                (fileClicked)="onFileSelected($event)">
+              </app-file-tree>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Содержимое файла"><pre>{{ fileService.selectedFileContent() }}</pre></mat-tab>
+        </mat-tab-group>
+        <a *ngIf="completed()" [href]="'/runs/' + fileService.runId + '/download'" target="_blank">Скачать готовый ZIP (доступен после успешной проверки)</a>
+      </div>
+    </mat-card>
+  </div>
+</div>
